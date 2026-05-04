@@ -4,7 +4,6 @@ export const joinPage = defineType({
   name: "joinPage",
   title: "Join Page",
   type: "document",
-  __experimental_actions: ["update", "publish"],
   fields: [
     defineField({
       name: "hero",

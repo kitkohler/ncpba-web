@@ -4,7 +4,6 @@ export const contactPage = defineType({
   name: "contactPage",
   title: "Contact Page",
   type: "document",
-  __experimental_actions: ["update", "publish"],
   fields: [
     defineField({
       name: "hero",

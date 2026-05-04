@@ -4,7 +4,6 @@ export const howItWorksPage = defineType({
   name: "howItWorksPage",
   title: "How It Works Page",
   type: "document",
-  __experimental_actions: ["update", "publish"],
   fields: [
     defineField({
       name: "hero",
