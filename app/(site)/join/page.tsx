@@ -59,32 +59,21 @@ export default function JoinPage() {
           >
             {COPY.stayInLoop.body}
           </p>
-          <div className="flex max-w-[420px] mx-auto mb-3.5">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              style={{ borderRadius: "4px 0 0 4px", borderRight: "none" }}
-            />
-            <button
-              className="text-[14px] font-semibold px-4 whitespace-nowrap"
-              style={{
-                backgroundColor: "var(--color-ember)",
-                color: "white",
-                border: "none",
-                borderRadius: "0 4px 4px 0",
-                fontFamily: "var(--font-body)",
-                cursor: "pointer",
-              }}
-            >
-              Subscribe
-            </button>
-          </div>
-          <p
-            className="text-[12px] leading-[1.5]"
-            style={{ color: "var(--color-smoke)", fontFamily: "var(--font-body)" }}
+          <a
+            href="https://lp.constantcontactpages.com/sl/qiHM07O/NCPBA"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 font-semibold rounded-[4px] border-[1.5px] cursor-pointer select-none whitespace-nowrap transition-all duration-[180ms] ease-out hover:brightness-90 hover:-translate-y-px active:brightness-[0.82] active:scale-[0.98] px-7 py-3 text-[15px]"
+            style={{
+              backgroundColor: "var(--color-ember)",
+              color: "white",
+              borderColor: "transparent",
+              fontFamily: "var(--font-body)",
+              textDecoration: "none",
+            }}
           >
-            {COPY.stayInLoop.note}
-          </p>
+            Join the mailing list
+          </a>
         </div>
       </section>
     </>

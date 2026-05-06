@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 type BtnVariant = "primary" | "secondary" | "outline" | "ghost" | "ghost-light" | "eco" | "white";

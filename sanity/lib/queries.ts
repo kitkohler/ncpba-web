@@ -21,9 +21,9 @@ export const HOME_QUERY = groq`
       ctaHref,
       secondaryCtaLabel,
       secondaryCtaHref,
-      backgroundType,
-      backgroundImage ${imageFragment},
-      backgroundVideoUrl
+      heroBackgroundImage ${imageFragment},
+      heroBackgroundVideoUrl,
+      heroOverlayOpacity
     },
     whatWeDoSection { overline, heading, paragraphs },
     whereWeWorkSection { overline, heading, paragraphs },
@@ -131,5 +131,17 @@ export const NEWS_POST_QUERY = groq`
 export const NEWS_POST_SLUGS_QUERY = groq`
   *[_type == "newsPost" && defined(slug.current)] {
     "slug": slug.current
+  }
+`;
+
+// ─── Site Settings ─────────────────────────────────────────────────────────────
+
+export const SITE_SETTINGS_QUERY = groq`
+  *[_type == "siteSettings" && _id == "siteSettings"][0] {
+    facebookUrl,
+    instagramUrl,
+    linkedinUrl,
+    youtubeUrl,
+    nextdoorUrl
   }
 `;

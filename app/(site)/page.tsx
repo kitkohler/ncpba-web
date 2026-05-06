@@ -67,10 +67,9 @@ export default async function HomePage() {
   // Sanity data — falls back to COPY values when document doesn't exist yet
   const page = await client.fetch(HOME_QUERY).catch(() => null);
 
-  const heroImageUrl =
-    page?.hero?.backgroundType === "image" && page?.hero?.backgroundImage
-      ? urlFor(page.hero.backgroundImage).width(1920).url()
-      : undefined;
+  const heroImageUrl = page?.hero?.heroBackgroundImage
+    ? urlFor(page.hero.heroBackgroundImage).width(1920).url()
+    : undefined;
 
   return (
     <>
@@ -87,9 +86,9 @@ export default async function HomePage() {
           label: page?.hero?.secondaryCtaLabel ?? COPY.hero.secondaryCta.label,
           href:  page?.hero?.secondaryCtaHref  ?? COPY.hero.secondaryCta.href,
         }}
-        backgroundType={page?.hero?.backgroundType ?? "gradient"}
         backgroundImageUrl={heroImageUrl}
-        backgroundVideoUrl={page?.hero?.backgroundVideoUrl}
+        backgroundVideoUrl={page?.hero?.heroBackgroundVideoUrl}
+        overlayOpacity={page?.hero?.heroOverlayOpacity ?? 50}
       />
 
       {/* ── What We Do ───────────────────────────────────────── */}

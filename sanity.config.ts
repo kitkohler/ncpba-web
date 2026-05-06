@@ -54,6 +54,10 @@ const structure: StructureResolver = (S) =>
         ),
       S.documentTypeListItem("partner").title("Partners"),
       S.documentTypeListItem("faqItem").title("FAQ Items"),
+      S.divider(),
+      S.listItem()
+        .title("Site Settings")
+        .child(S.document().schemaType("siteSettings").documentId("siteSettings")),
     ]);
 
 export default defineConfig({

@@ -7,39 +7,53 @@ interface HeroBlockProps {
   subhead: string;
   primaryCta: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
-  /**
-   * "gradient" — decorative CSS gradient (default / placeholder)
-   * "image"    — full-bleed photo via backgroundImageUrl
-   * "video"    — full-bleed video via backgroundVideoUrl
-   */
-  backgroundType?: "gradient" | "image" | "video";
   backgroundImageUrl?: string;
   backgroundVideoUrl?: string;
+  /** 0–100. Controls the dark scrim opacity so text stays readable. Default 50. */
+  overlayOpacity?: number;
 }
 
-/**
- * Full-viewport home page hero.
- * Background slot is designed for easy swap between gradient / image / video
- * without touching the content or overlay layers.
- */
 export default function HeroBlock({
   overline,
   headline,
   subhead,
   primaryCta,
   secondaryCta,
-  backgroundType = "gradient",
   backgroundImageUrl,
   backgroundVideoUrl,
+  overlayOpacity = 50,
 }: HeroBlockProps) {
+  const hasVideo = Boolean(backgroundVideoUrl);
+  const hasImage = Boolean(backgroundImageUrl);
+  const scrimAlpha = (Math.min(100, Math.max(0, overlayOpacity)) / 100).toFixed(2);
+
   return (
     <section
-      className="relative w-full min-h-screen flex items-center overflow-hidden"
+      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden"
       style={{ backgroundColor: "var(--color-deep-soil)" }}
     >
-      {/* ── Background slot ─────────────────────────────────── */}
+      {/* ── Background ────────────────────────────────────────── */}
 
-      {backgroundType === "gradient" && (
+      {hasVideo && (
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          src={backgroundVideoUrl}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+        />
+      )}
+
+      {!hasVideo && hasImage && (
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${backgroundImageUrl})` }}
+        />
+      )}
+
+      {!hasVideo && !hasImage && (
         <div
           className="absolute inset-0"
           style={{
@@ -73,36 +87,14 @@ export default function HeroBlock({
         </div>
       )}
 
-      {backgroundType === "image" && backgroundImageUrl && (
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${backgroundImageUrl})` }}
-        />
-      )}
-
-      {backgroundType === "video" && backgroundVideoUrl && (
-        <video
-          className="absolute inset-0 h-full w-full object-cover"
-          src={backgroundVideoUrl}
-          autoPlay
-          muted
-          loop
-          playsInline
-          aria-hidden="true"
-        />
-      )}
-
-      {/* ── Dark scrim (same for all background types) ─────── */}
+      {/* ── Dark scrim ────────────────────────────────────────── */}
       <div
         className="absolute inset-0"
-        style={{ background: "rgba(18,12,5,0.52)" }}
+        style={{ background: `rgba(18,12,5,${scrimAlpha})` }}
       />
 
-      {/* ── Content ──────────────────────────────────────────── */}
-      <div
-        className="fade-up relative z-10 w-full max-w-[860px] px-8 md:px-20 py-0"
-        style={{ marginLeft: 0 }}
-      >
+      {/* ── Content ───────────────────────────────────────────── */}
+      <div className="fade-up relative z-10 w-full max-w-[860px] px-8 md:px-20 text-center">
         {overline && (
           <Overline color="var(--color-sage)" className="mb-[22px]">
             {overline}
@@ -117,13 +109,13 @@ export default function HeroBlock({
         </h1>
 
         <p
-          className="fade-up-2 text-[17px] md:text-[19px] leading-[1.68] mb-[38px] max-w-[50ch]"
+          className="fade-up-2 text-[17px] md:text-[19px] leading-[1.68] mb-[38px] max-w-[50ch] mx-auto"
           style={{ color: "rgba(237,229,212,0.72)", fontFamily: "var(--font-body)" }}
         >
           {subhead}
         </p>
 
-        <div className="fade-up-3 flex flex-wrap gap-3.5">
+        <div className="fade-up-3 flex flex-wrap gap-3.5 justify-center">
           <Btn variant="primary" size="lg" href={primaryCta.href}>
             {primaryCta.label}
           </Btn>
@@ -135,10 +127,9 @@ export default function HeroBlock({
         </div>
       </div>
 
-      {/* ── Scroll cue ───────────────────────────────────────── */}
+      {/* ── Scroll cue ────────────────────────────────────────── */}
       <div
-        className="absolute bottom-8 flex items-center gap-2.5 opacity-40"
-        style={{ left: "80px" }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2.5 opacity-40"
       >
         <div className="w-8 h-px" style={{ background: "var(--color-warm-cream)" }} />
         <span

@@ -9,8 +9,11 @@ import { boardMember } from "./boardMember";
 import { advisoryCouncilMember } from "./advisoryCouncilMember";
 import { partner } from "./partner";
 import { faqItem } from "./faqItem";
+import { siteSettings } from "./siteSettings";
 
 export const schemaTypes = [
+  // Global
+  siteSettings,
   // Singleton pages
   homePage,
   aboutPage,

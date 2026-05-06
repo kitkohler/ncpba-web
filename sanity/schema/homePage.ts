@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { SliderInput } from "../components/SliderInput";
 
 export const homePage = defineType({
   name: "homePage",
@@ -18,24 +19,27 @@ export const homePage = defineType({
         defineField({ name: "secondaryCtaLabel", title: "Secondary CTA Label", type: "string" }),
         defineField({ name: "secondaryCtaHref", title: "Secondary CTA Href", type: "string" }),
         defineField({
-          name: "backgroundType",
-          title: "Background Type",
-          type: "string",
-          options: {
-            list: [
-              { title: "Gradient", value: "gradient" },
-              { title: "Image", value: "image" },
-              { title: "Video", value: "video" },
-            ],
-          },
-        }),
-        defineField({
-          name: "backgroundImage",
+          name: "heroBackgroundImage",
           title: "Background Image",
           type: "image",
           options: { hotspot: true },
+          description: "Used when no video URL is set.",
         }),
-        defineField({ name: "backgroundVideoUrl", title: "Background Video URL", type: "url" }),
+        defineField({
+          name: "heroBackgroundVideoUrl",
+          title: "Background Video URL",
+          type: "url",
+          description: "When set, the video plays behind content instead of the image.",
+        }),
+        defineField({
+          name: "heroOverlayOpacity",
+          title: "Overlay Opacity",
+          type: "number",
+          initialValue: 50,
+          description: "Dark overlay strength (0 = none, 100 = fully dark). Keeps text readable over busy backgrounds.",
+          validation: (Rule) => Rule.min(0).max(100),
+          components: { input: SliderInput },
+        }),
       ],
     }),
     defineField({
