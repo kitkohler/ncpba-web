@@ -26,7 +26,7 @@ export const HOME_QUERY = groq`
       heroOverlayOpacity
     },
     whatWeDoSection { overline, heading, paragraphs },
-    whereWeWorkSection { overline, heading, paragraphs },
+    whereWeWorkSection { overline, heading, paragraphs, image ${imageFragment} },
     howItWorksTeaserSection { overline },
     howItWorksTeaserSteps[] { n, title, body },
     ctaStrip { headline, body }

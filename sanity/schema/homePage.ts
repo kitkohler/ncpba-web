@@ -70,6 +70,17 @@ export const homePage = defineType({
           type: "array",
           of: [{ type: "text" }],
         }),
+        defineField({
+          name: "image",
+          title: "Section Image",
+          type: "image",
+          options: { hotspot: true },
+          description: "Landscape photo displayed on the left side of the Where We Work section.",
+          fields: [
+            defineField({ name: "alt", title: "Alt Text", type: "string" }),
+            defineField({ name: "caption", title: "Caption", type: "string" }),
+          ],
+        }),
       ],
     }),
     defineField({

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import { HOME_QUERY, PARTNERS_QUERY } from "@/sanity/lib/queries";
 import HeroBlock from "@/components/HeroBlock";
@@ -140,40 +141,61 @@ export default async function HomePage() {
         style={{ backgroundColor: "var(--color-sand)" }}
       >
         <div className="mx-auto max-w-[1200px] grid grid-cols-1 gap-14 md:grid-cols-2 md:gap-[72px] items-center">
-          {/* Image placeholder — swap for <Image> when photography is available */}
-          <div
-            className="rounded-lg overflow-hidden relative"
-            style={{
-              height: 420,
-              background: "linear-gradient(150deg, #3D3220 0%, #6B5B45 55%, #8B7355 100%)",
-            }}
-          >
-            <svg
-              className="absolute bottom-0 w-full opacity-45"
-              viewBox="0 0 600 220"
-              preserveAspectRatio="none"
-            >
-              <path
-                d="M0,220 L0,150 Q60,110 120,140 Q180,170 240,120 Q300,70 360,100 Q420,130 480,80 Q540,30 600,60 L600,220 Z"
-                fill="#2C2416"
+          {/* Where We Work image — editable in Sanity, falls back to placeholder */}
+          {page?.whereWeWorkSection?.image?.asset ? (
+            <div className="rounded-lg overflow-hidden relative" style={{ height: 420 }}>
+              <Image
+                src={urlFor(page.whereWeWorkSection.image).width(800).height(420).fit("crop").url()}
+                alt={page.whereWeWorkSection.image.alt ?? "Where we work"}
+                fill
+                className="object-cover"
               />
-            </svg>
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(ellipse at 35% 50%, rgba(199,91,0,0.12) 0%, transparent 60%)",
-              }}
-            />
-            <div className="absolute bottom-6 left-6">
-              <p
-                className="text-[13px] italic"
-                style={{ color: "rgba(237,229,212,0.45)", fontFamily: "var(--font-display)" }}
-              >
-                Oak woodland, Sierra Nevada foothills — Nevada County, CA
-              </p>
+              {page.whereWeWorkSection.image.caption && (
+                <div className="absolute bottom-6 left-6">
+                  <p
+                    className="text-[13px] italic"
+                    style={{ color: "rgba(237,229,212,0.75)", fontFamily: "var(--font-display)" }}
+                  >
+                    {page.whereWeWorkSection.image.caption}
+                  </p>
+                </div>
+              )}
             </div>
-          </div>
+          ) : (
+            <div
+              className="rounded-lg overflow-hidden relative"
+              style={{
+                height: 420,
+                background: "linear-gradient(150deg, #3D3220 0%, #6B5B45 55%, #8B7355 100%)",
+              }}
+            >
+              <svg
+                className="absolute bottom-0 w-full opacity-45"
+                viewBox="0 0 600 220"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M0,220 L0,150 Q60,110 120,140 Q180,170 240,120 Q300,70 360,100 Q420,130 480,80 Q540,30 600,60 L600,220 Z"
+                  fill="#2C2416"
+                />
+              </svg>
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at 35% 50%, rgba(199,91,0,0.12) 0%, transparent 60%)",
+                }}
+              />
+              <div className="absolute bottom-6 left-6">
+                <p
+                  className="text-[13px] italic"
+                  style={{ color: "rgba(237,229,212,0.45)", fontFamily: "var(--font-display)" }}
+                >
+                  Oak woodland, Sierra Nevada foothills — Nevada County, CA
+                </p>
+              </div>
+            </div>
+          )}
 
           <div>
             <Overline color="var(--color-sage)">
