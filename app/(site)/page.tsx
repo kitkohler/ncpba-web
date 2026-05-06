@@ -1,5 +1,5 @@
 import { client } from "@/sanity/lib/client";
-import { HOME_QUERY } from "@/sanity/lib/queries";
+import { HOME_QUERY, PARTNERS_QUERY } from "@/sanity/lib/queries";
 import HeroBlock from "@/components/HeroBlock";
 import Overline from "@/components/Overline";
 import Btn from "@/components/Btn";
@@ -65,7 +65,13 @@ const COPY = {
 
 export default async function HomePage() {
   // Sanity data — falls back to COPY values when document doesn't exist yet
-  const page = await client.fetch(HOME_QUERY).catch(() => null);
+  const [page, partners] = await Promise.all([
+    client.fetch(HOME_QUERY).catch(() => null),
+    client.fetch(PARTNERS_QUERY).catch(() => []),
+  ]);
+
+  console.log("[DEBUG] HOME_QUERY result:", JSON.stringify(page, null, 2));
+  console.log("[DEBUG] PARTNERS_QUERY result:", JSON.stringify(partners, null, 2));
 
   const heroImageUrl = page?.hero?.heroBackgroundImage
     ? urlFor(page.hero.heroBackgroundImage).width(1920).url()
@@ -294,9 +300,10 @@ export default async function HomePage() {
         <div className="mx-auto max-w-[1200px]">
           <Overline color="var(--color-smoke)">{COPY.partners.overline}</Overline>
           <div className="flex flex-wrap gap-2.5 mb-6">
-            {COPY.partners.names.map((name) => (
+            {(partners.length > 0 ? partners : COPY.partners.names.map((name: string) => ({ _id: name, name }))).map(
+              (p: { _id: string; name: string; href?: string }) => (
               <div
-                key={name}
+                key={p._id}
                 className="rounded-[4px] px-[18px] py-2.5 text-[13px] font-medium"
                 style={{
                   backgroundColor: "white",
@@ -305,7 +312,7 @@ export default async function HomePage() {
                   fontFamily: "var(--font-body)",
                 }}
               >
-                {name}
+                {p.name}
               </div>
             ))}
           </div>
