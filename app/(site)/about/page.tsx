@@ -6,7 +6,7 @@ import Overline from "@/components/Overline";
 import Btn from "@/components/Btn";
 
 export const metadata: Metadata = { title: "About" };
-export const revalidate = 60;
+export const revalidate = 0;
 
 const COPY = {
   hero: {

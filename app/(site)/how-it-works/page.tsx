@@ -7,7 +7,7 @@ import Btn from "@/components/Btn";
 import Accordion from "@/components/Accordion";
 
 export const metadata: Metadata = { title: "How It Works" };
-export const revalidate = 60;
+export const revalidate = 0;
 
 const COPY = {
   hero: {

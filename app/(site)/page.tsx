@@ -5,7 +5,7 @@ import Overline from "@/components/Overline";
 import Btn from "@/components/Btn";
 import { urlFor } from "@/sanity/lib/image";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 // ─── Static copy (Sanity data overlays these when documents exist) ──────────
 const COPY = {
