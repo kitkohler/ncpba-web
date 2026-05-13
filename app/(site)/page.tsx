@@ -310,6 +310,17 @@ export default async function HomePage() {
             <Btn variant="ghost" size="lg" href="/join">
               {COPY.getInvolved.cta2.label}
             </Btn>
+            <a
+              href="https://lp.constantcontactpages.com/sl/Uj88TTf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[14px] font-semibold transition-opacity duration-200 hover:opacity-100"
+              style={{ color: "rgba(237,229,212,0.52)", fontFamily: "var(--font-body)", textDecoration: "none", opacity: 0.52 }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+              onMouseLeave={e => (e.currentTarget.style.opacity = "0.52")}
+            >
+              Join the mailing list →
+            </a>
           </div>
         </div>
       </section>

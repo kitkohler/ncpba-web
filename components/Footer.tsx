@@ -28,6 +28,7 @@ const FOOTER_COLS = [
       { label: "Events",       href: "/events" },
       { label: "News",         href: "/news"   },
       { label: "Get Involved", href: "/join"   },
+      { label: "Mailing List", href: "https://lp.constantcontactpages.com/sl/Uj88TTf" },
     ],
   },
 ];

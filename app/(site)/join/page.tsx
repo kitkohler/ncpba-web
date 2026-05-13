@@ -60,7 +60,7 @@ export default function JoinPage() {
             {COPY.stayInLoop.body}
           </p>
           <a
-            href="https://lp.constantcontactpages.com/sl/qiHM07O/NCPBA"
+            href="https://lp.constantcontactpages.com/sl/Uj88TTf"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-1.5 font-semibold rounded-[4px] border-[1.5px] cursor-pointer select-none whitespace-nowrap transition-all duration-[180ms] ease-out hover:brightness-90 hover:-translate-y-px active:brightness-[0.82] active:scale-[0.98] px-7 py-3 text-[15px]"

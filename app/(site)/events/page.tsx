@@ -112,7 +112,7 @@ export default async function EventsPage() {
               >
                 No upcoming events scheduled right now — check back soon.
               </p>
-              <Btn variant="ghost-light" size="md" href="/join">
+              <Btn variant="ghost-light" size="md" href="https://lp.constantcontactpages.com/sl/Uj88TTf">
                 Get notified when events are posted
               </Btn>
             </div>
@@ -222,6 +222,22 @@ export default async function EventsPage() {
             </div>
           )}
         </div>
+      </section>
+
+      {/* ── Mailing list nudge ───────────────────────────────── */}
+      <section
+        className="py-14 px-8 md:px-16 text-center"
+        style={{ backgroundColor: "var(--color-sand)" }}
+      >
+        <p
+          className="text-[15px] mb-4"
+          style={{ color: "var(--color-oak-bark)", fontFamily: "var(--font-body)" }}
+        >
+          Want a heads-up when new events are posted?
+        </p>
+        <Btn variant="primary" size="md" href="https://lp.constantcontactpages.com/sl/Uj88TTf">
+          Join the Nevada County Prescribed Fire mailing list
+        </Btn>
       </section>
     </>
   );
