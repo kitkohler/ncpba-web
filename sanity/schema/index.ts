@@ -1,3 +1,4 @@
+import { allBlocks } from "./blocks";
 import { homePage } from "./homePage";
 import { aboutPage } from "./aboutPage";
 import { howItWorksPage } from "./howItWorksPage";
@@ -12,6 +13,8 @@ import { faqItem } from "./faqItem";
 import { siteSettings } from "./siteSettings";
 
 export const schemaTypes = [
+  // Blocks (registered globally so page schemas can reference them)
+  ...allBlocks,
   // Global
   siteSettings,
   // Singleton pages

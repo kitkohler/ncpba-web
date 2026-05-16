@@ -6,25 +6,14 @@ export const joinPage = defineType({
   type: "document",
   fields: [
     defineField({
-      name: "hero",
-      title: "Hero",
-      type: "object",
-      fields: [
-        defineField({ name: "overline", title: "Overline", type: "string" }),
-        defineField({ name: "headline", title: "Headline", type: "string" }),
-        defineField({ name: "subhead", title: "Subhead", type: "text", rows: 3 }),
+      name: "pageBuilder",
+      title: "Page Builder",
+      type: "array",
+      of: [
+        { type: "block.pageHero" },
+        { type: "block.joinSignup" },
+        { type: "block.emailSignup" },
       ],
-    }),
-    defineField({
-      name: "emailSignupHeading",
-      title: "Email Signup Heading",
-      type: "string",
-    }),
-    defineField({
-      name: "emailSignupBody",
-      title: "Email Signup Body",
-      type: "text",
-      rows: 3,
     }),
   ],
   preview: { prepare: () => ({ title: "Join Page" }) },

@@ -13,23 +13,33 @@ const imageFragment = groq`{
 
 export const HOME_QUERY = groq`
   *[_type == "homePage"][0] {
-    hero {
-      overline,
-      headline,
-      subhead,
-      ctaLabel,
-      ctaHref,
-      secondaryCtaLabel,
-      secondaryCtaHref,
-      heroBackgroundImage ${imageFragment},
-      heroBackgroundVideoUrl,
-      heroOverlayOpacity
-    },
-    whatWeDoSection { overline, heading, paragraphs },
-    whereWeWorkSection { overline, heading, paragraphs, image ${imageFragment} },
-    howItWorksTeaserSection { overline },
-    howItWorksTeaserSteps[] { n, title, body },
-    ctaStrip { headline, body }
+    pageBuilder[] {
+      _type,
+      _key,
+      _type == "block.hero" => {
+        overline, headline, subhead,
+        ctaLabel, ctaHref,
+        secondaryCtaLabel, secondaryCtaHref,
+        "backgroundImageUrl": backgroundImage.asset->url,
+        backgroundImage ${imageFragment},
+        backgroundVideoUrl,
+        overlayOpacity
+      },
+      _type == "block.textMedia" => {
+        overline, overlineColor, heading, paragraphs,
+        ctaLabel, ctaHref, ctaVariant,
+        image { asset->{ _id, url, metadata { dimensions, lqip } }, alt, hotspot, crop, caption },
+        mediaPosition, backgroundColor
+      },
+      _type == "block.stepCards" => {
+        overline, heading, layout, ctaLabel, ctaHref,
+        steps[]{ n, title, body }
+      },
+      _type == "block.ctaStrip" => {
+        headline, body, ctaLabel, ctaHref, variant,
+        secondaryCtaLabel, secondaryCtaHref
+      }
+    }
   }
 `;
 
@@ -37,13 +47,33 @@ export const HOME_QUERY = groq`
 
 export const ABOUT_QUERY = groq`{
   "page": *[_type == "aboutPage"][0] {
-    hero { overline, headline, subhead },
-    missionVision { overline, heading, paragraphs },
-    howWeWorkSection { overline, heading },
-    howWeWorkPrinciples[] { title, body },
-    teamSection { overline, heading },
-    advisorySection { overline, intro },
-    fiscalSponsorBody
+    pageBuilder[] {
+      _type,
+      _key,
+      _type == "block.pageHero" => {
+        overline, headline, subhead
+      },
+      _type == "block.textMedia" => {
+        overline, overlineColor, heading, paragraphs,
+        ctaLabel, ctaHref, ctaVariant,
+        image { asset->{ _id, url, metadata { dimensions, lqip } }, alt, hotspot, crop, caption },
+        mediaPosition, backgroundColor
+      },
+      _type == "block.principleCards" => {
+        overline, heading, backgroundColor,
+        principles[]{ title, body }
+      },
+      _type == "block.teamGrid" => {
+        overline, heading
+      },
+      _type == "block.advisoryList" => {
+        overline, intro
+      },
+      _type == "block.fiscalSponsor" => {
+        overline, body,
+        logoImage { asset->{ _id, url, metadata { dimensions, lqip } }, alt }
+      }
+    }
   },
   "boardMembers": *[_type == "boardMember"] | order(order asc) {
     _id, name, role, bio
@@ -57,15 +87,31 @@ export const ABOUT_QUERY = groq`{
 
 export const HOW_IT_WORKS_QUERY = groq`
   *[_type == "howItWorksPage"][0] {
-    hero { overline, headline, subhead },
-    introSection { overline, heading },
-    landOwnerSection { overline, heading },
-    volunteerSection { overline, heading },
-    faqSection { overline, heading },
-    "faqItems": faqs[]-> {
-      _id,
-      question,
-      "answer": pt::text(answer)
+    pageBuilder[] {
+      _type,
+      _key,
+      _type == "block.pageHero" => {
+        overline, headline, subhead
+      },
+      _type == "block.textMedia" => {
+        overline, overlineColor, heading, paragraphs,
+        ctaLabel, ctaHref, ctaVariant,
+        image { asset->{ _id, url, metadata { dimensions, lqip } }, alt, hotspot, crop, caption },
+        mediaPosition, backgroundColor
+      },
+      _type == "block.stepCards" => {
+        overline, heading, layout, ctaLabel, ctaHref,
+        steps[]{ n, title, body }
+      },
+      _type == "block.volunteerSplit" => {
+        overline, heading, bodyParagraphs,
+        whatTheyDo, whatTheyGet,
+        ctaLabel, ctaHref
+      },
+      _type == "block.faqSection" => {
+        overline, heading,
+        "faqItems": faqs[]->{ _id, question, "answer": pt::text(answer) }
+      }
     }
   }
 `;
@@ -74,9 +120,19 @@ export const HOW_IT_WORKS_QUERY = groq`
 
 export const JOIN_QUERY = groq`
   *[_type == "joinPage"][0] {
-    hero { overline, headline, subhead },
-    emailSignupHeading,
-    emailSignupBody
+    pageBuilder[] {
+      _type,
+      _key,
+      _type == "block.pageHero" => {
+        overline, headline, subhead
+      },
+      _type == "block.joinSignup" => {
+        heading, body
+      },
+      _type == "block.emailSignup" => {
+        overline, heading, body, ctaLabel, ctaHref, backgroundColor
+      }
+    }
   }
 `;
 
@@ -84,9 +140,16 @@ export const JOIN_QUERY = groq`
 
 export const CONTACT_QUERY = groq`
   *[_type == "contactPage"][0] {
-    hero { overline, headline, subhead },
-    email,
-    location
+    pageBuilder[] {
+      _type,
+      _key,
+      _type == "block.pageHero" => {
+        overline, headline, subhead
+      },
+      _type == "block.contactBody" => {
+        email, location
+      }
+    }
   }
 `;
 

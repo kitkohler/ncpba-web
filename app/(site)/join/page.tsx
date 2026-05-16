@@ -1,81 +1,38 @@
 import type { Metadata } from "next";
-import PageHero from "@/components/PageHero";
-import Overline from "@/components/Overline";
-import JoinPathCards from "@/components/JoinPathCards";
+import { client } from "@/sanity/lib/client";
+import { JOIN_QUERY } from "@/sanity/lib/queries";
+import PageBuilder from "@/components/PageBuilder";
 
 export const metadata: Metadata = { title: "Join" };
+export const revalidate = 60;
 
-const COPY = {
-  hero: {
+const FALLBACK_BLOCKS = [
+  {
+    _type: "block.pageHero",
+    _key: "hero",
     overline: "Join NCPBA",
     headline: "Good fire takes good neighbors.",
-    subhead:  "NCPBA is a community you join, not a service you hire. Here's how to become part of it.",
+    subhead: "NCPBA is a community you join, not a service you hire. Here's how to become part of it.",
   },
-  stayInLoop: {
+  {
+    _type: "block.joinSignup",
+    _key: "joinSignup",
+  },
+  {
+    _type: "block.emailSignup",
+    _key: "emailSignup",
     overline: "Stay in the Loop",
-    heading:  "Not ready to jump in yet?",
-    body:     "Sign up for occasional updates on burns, training opportunities, and NCPBA news.",
-    note:     "We won't flood your inbox. This is a working organization, not a newsletter factory.",
+    heading: "Not ready to jump in yet?",
+    body: "Sign up for occasional updates on burns, training opportunities, and NCPBA news.",
+    ctaLabel: "Join the mailing list",
+    ctaHref: "https://lp.constantcontactpages.com/sl/Uj88TTf",
+    backgroundColor: "sand",
   },
-};
+];
 
-export default function JoinPage() {
-  return (
-    <>
-      <PageHero
-        overline={COPY.hero.overline}
-        headline={COPY.hero.headline}
-        subhead={COPY.hero.subhead}
-      />
+export default async function JoinPage() {
+  const page = await client.fetch(JOIN_QUERY).catch(() => null);
+  const blocks = page?.pageBuilder?.length ? page.pageBuilder : FALLBACK_BLOCKS;
 
-      {/* ── Two paths + connect form ──────────────────────────── */}
-      <section
-        className="py-[96px] px-8 md:px-16"
-        style={{ backgroundColor: "var(--color-warm-cream)" }}
-      >
-        <div className="mx-auto max-w-[940px]">
-          <JoinPathCards />
-        </div>
-      </section>
-
-      {/* ── Stay in the loop / email sign-up ─────────────────── */}
-      <section
-        className="py-[72px] px-8 md:px-16"
-        style={{ backgroundColor: "var(--color-sand)" }}
-      >
-        <div className="mx-auto max-w-[540px] text-center">
-          <Overline color="var(--color-sage)" className="justify-center">
-            {COPY.stayInLoop.overline}
-          </Overline>
-          <h2
-            className="text-[28px] md:text-[32px] leading-[1.15] mb-3.5"
-            style={{ fontFamily: "var(--font-display)", fontWeight: 400, color: "var(--color-deep-soil)" }}
-          >
-            {COPY.stayInLoop.heading}
-          </h2>
-          <p
-            className="text-[15px] leading-[1.70] mb-7"
-            style={{ color: "var(--color-oak-bark)", fontFamily: "var(--font-body)" }}
-          >
-            {COPY.stayInLoop.body}
-          </p>
-          <a
-            href="https://lp.constantcontactpages.com/sl/Uj88TTf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-1.5 font-semibold rounded-[4px] border-[1.5px] cursor-pointer select-none whitespace-nowrap transition-all duration-[180ms] ease-out hover:brightness-90 hover:-translate-y-px active:brightness-[0.82] active:scale-[0.98] px-7 py-3 text-[15px]"
-            style={{
-              backgroundColor: "var(--color-ember)",
-              color: "white",
-              borderColor: "transparent",
-              fontFamily: "var(--font-body)",
-              textDecoration: "none",
-            }}
-          >
-            Join the mailing list
-          </a>
-        </div>
-      </section>
-    </>
-  );
+  return <PageBuilder blocks={blocks} context={{ page: "join" }} />;
 }

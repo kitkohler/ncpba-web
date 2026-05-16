@@ -1,5 +1,4 @@
 import { defineField, defineType } from "sanity";
-import { SliderInput } from "../components/SliderInput";
 
 export const homePage = defineType({
   name: "homePage",
@@ -7,113 +6,14 @@ export const homePage = defineType({
   type: "document",
   fields: [
     defineField({
-      name: "hero",
-      title: "Hero",
-      type: "object",
-      fields: [
-        defineField({ name: "overline", title: "Overline", type: "string" }),
-        defineField({ name: "headline", title: "Headline", type: "string" }),
-        defineField({ name: "subhead", title: "Subhead", type: "text", rows: 3 }),
-        defineField({ name: "ctaLabel", title: "Primary CTA Label", type: "string" }),
-        defineField({ name: "ctaHref", title: "Primary CTA Href", type: "string" }),
-        defineField({ name: "secondaryCtaLabel", title: "Secondary CTA Label", type: "string" }),
-        defineField({ name: "secondaryCtaHref", title: "Secondary CTA Href", type: "string" }),
-        defineField({
-          name: "heroBackgroundImage",
-          title: "Background Image",
-          type: "image",
-          options: { hotspot: true },
-          description: "Used when no video URL is set.",
-        }),
-        defineField({
-          name: "heroBackgroundVideoUrl",
-          title: "Background Video URL",
-          type: "url",
-          description: "When set, the video plays behind content instead of the image.",
-        }),
-        defineField({
-          name: "heroOverlayOpacity",
-          title: "Overlay Opacity",
-          type: "number",
-          initialValue: 50,
-          description: "Dark overlay strength (0 = none, 100 = fully dark). Keeps text readable over busy backgrounds.",
-          validation: (Rule) => Rule.min(0).max(100),
-          components: { input: SliderInput },
-        }),
-      ],
-    }),
-    defineField({
-      name: "whatWeDoSection",
-      title: "What We Do Section",
-      type: "object",
-      fields: [
-        defineField({ name: "overline", title: "Overline", type: "string" }),
-        defineField({ name: "heading", title: "Heading", type: "string" }),
-        defineField({
-          name: "paragraphs",
-          title: "Paragraphs",
-          type: "array",
-          of: [{ type: "text" }],
-        }),
-      ],
-    }),
-    defineField({
-      name: "whereWeWorkSection",
-      title: "Where We Work Section",
-      type: "object",
-      fields: [
-        defineField({ name: "overline", title: "Overline", type: "string" }),
-        defineField({ name: "heading", title: "Heading", type: "string" }),
-        defineField({
-          name: "paragraphs",
-          title: "Paragraphs",
-          type: "array",
-          of: [{ type: "text" }],
-        }),
-        defineField({
-          name: "image",
-          title: "Section Image",
-          type: "image",
-          options: { hotspot: true },
-          description: "Landscape photo displayed on the left side of the Where We Work section.",
-          fields: [
-            defineField({ name: "alt", title: "Alt Text", type: "string" }),
-            defineField({ name: "caption", title: "Caption", type: "string" }),
-          ],
-        }),
-      ],
-    }),
-    defineField({
-      name: "howItWorksTeaserSection",
-      title: "How It Works Teaser Header",
-      type: "object",
-      fields: [
-        defineField({ name: "overline", title: "Overline", type: "string" }),
-      ],
-    }),
-    defineField({
-      name: "howItWorksTeaserSteps",
-      title: "How It Works Steps",
+      name: "pageBuilder",
+      title: "Page Builder",
       type: "array",
       of: [
-        {
-          type: "object",
-          fields: [
-            defineField({ name: "n", title: "Step Number (e.g. 01)", type: "string" }),
-            defineField({ name: "title", title: "Title", type: "string" }),
-            defineField({ name: "body", title: "Body", type: "text", rows: 3 }),
-          ],
-          preview: { select: { title: "title", subtitle: "n" } },
-        },
-      ],
-    }),
-    defineField({
-      name: "ctaStrip",
-      title: "CTA Strip",
-      type: "object",
-      fields: [
-        defineField({ name: "headline", title: "Headline", type: "string" }),
-        defineField({ name: "body", title: "Body", type: "text", rows: 2 }),
+        { type: "block.hero" },
+        { type: "block.textMedia" },
+        { type: "block.stepCards" },
+        { type: "block.ctaStrip" },
       ],
     }),
   ],
