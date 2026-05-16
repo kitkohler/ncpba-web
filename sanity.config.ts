@@ -63,6 +63,7 @@ const structure: StructureResolver = (S) =>
 export default defineConfig({
   name: "ncpba",
   title: "NCPBA",
+  basePath: "/studio",
   projectId,
   dataset,
   plugins: [structureTool({ structure }), visionTool()],
