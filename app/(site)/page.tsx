@@ -26,7 +26,9 @@ const FALLBACK_BLOCKS = [
   {
     _type: "block.hero",
     _key: "hero",
-    // No overline/headline/subhead/cta — HeroBlock uses its own COPY defaults
+    backgroundVideoUrl: "https://res.cloudinary.com/drpr93xmp/video/upload/NCPBA_Header_rrgxgn.mp4",
+    overlayOpacity: 66,
+    // overline/headline/subhead/cta use HeroBlock's own COPY defaults
   },
   {
     _type: "block.textMedia",
