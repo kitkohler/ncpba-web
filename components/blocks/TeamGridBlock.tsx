@@ -1,11 +1,18 @@
+import { PortableText } from "@portabletext/react";
 import Overline from "@/components/Overline";
 import Btn from "@/components/Btn";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function textBlock(text: string): any[] {
+  return [{ _type: "block", _key: "b", style: "normal", markDefs: [], children: [{ _type: "span", _key: "s", text, marks: [] }] }];
+}
 
 interface BoardMember {
   _id?: string;
   name: string;
   role?: string;
-  bio: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  bio: any[];
 }
 
 interface Props {
@@ -15,9 +22,9 @@ interface Props {
 }
 
 const COPY_BOARD: BoardMember[] = [
-  { name: "Kit [Last Name]", role: "President & Founder", bio: "[Bio — 2–3 sentences, personal and place-based]" },
-  { name: "Theo Fitanides", role: "Vice President", bio: "[Bio — 2–3 sentences]" },
-  { name: "Jennifer Rain Crosby", role: "Board Member", bio: "[Bio — 2–3 sentences]" },
+  { name: "Kit [Last Name]", role: "President & Founder", bio: textBlock("[Bio — 2–3 sentences, personal and place-based]") },
+  { name: "Theo Fitanides", role: "Vice President", bio: textBlock("[Bio — 2–3 sentences]") },
+  { name: "Jennifer Rain Crosby", role: "Board Member", bio: textBlock("[Bio — 2–3 sentences]") },
 ];
 
 export default function TeamGridBlock(props: Props) {
@@ -67,12 +74,12 @@ export default function TeamGridBlock(props: Props) {
               >
                 {member.role}
               </div>
-              <p
-                className="text-[13px] leading-[1.68] italic"
+              <div
+                className="text-[13px] leading-[1.68] italic [&_p]:mb-2 [&_p:last-child]:mb-0"
                 style={{ color: "var(--color-oak-bark)", fontFamily: "var(--font-body)", maxWidth: "none" }}
               >
-                {member.bio}
-              </p>
+                <PortableText value={member.bio} />
+              </div>
             </div>
           ))}
         </div>

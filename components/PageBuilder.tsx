@@ -18,7 +18,8 @@ export interface BoardMember {
   _id: string;
   name: string;
   role?: string;
-  bio: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  bio: any[];
 }
 
 export interface AdvisoryMember {

@@ -7,10 +7,15 @@ import type { BoardMember, AdvisoryMember } from "@/components/PageBuilder";
 export const metadata: Metadata = { title: "About" };
 export const revalidate = 60;
 
+function textBlock(text: string): any[] {
+  return [{ _type: "block", _key: "b", style: "normal", markDefs: [], children: [{ _type: "span", _key: "s", text, marks: [] }] }];
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const COPY_BOARD: BoardMember[] = [
-  { _id: "fallback-1", name: "Kit [Last Name]", role: "President & Founder", bio: "[Bio — 2–3 sentences, personal and place-based]" },
-  { _id: "fallback-2", name: "Theo Fitanides", role: "Vice President", bio: "[Bio — 2–3 sentences]" },
-  { _id: "fallback-3", name: "Jennifer Rain Crosby", role: "Board Member", bio: "[Bio — 2–3 sentences]" },
+  { _id: "fallback-1", name: "Kit [Last Name]", role: "President & Founder", bio: textBlock("[Bio — 2–3 sentences, personal and place-based]") },
+  { _id: "fallback-2", name: "Theo Fitanides", role: "Vice President", bio: textBlock("[Bio — 2–3 sentences]") },
+  { _id: "fallback-3", name: "Jennifer Rain Crosby", role: "Board Member", bio: textBlock("[Bio — 2–3 sentences]") },
 ];
 
 const COPY_ADVISORY: AdvisoryMember[] = [
