@@ -3,7 +3,7 @@
 // Hardcoded fallback — update this when the signup destination changes in code.
 // At runtime the route handler at app/signup/route.ts takes precedence and will
 // use siteSettings.signupUrl from Sanity if that field is populated.
-export const SIGNUP_URL_FALLBACK = "https://form.typeform.com/to/IUcXpMZu";
+const SIGNUP_URL_FALLBACK = "https://form.typeform.com/to/IUcXpMZu";
 
 const nextConfig = {
   images: {

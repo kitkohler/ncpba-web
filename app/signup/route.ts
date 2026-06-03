@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { client } from "@/sanity/lib/client";
-import { SIGNUP_URL_FALLBACK } from "../../next.config.mjs";
+
+// Update this when the signup destination changes in code.
+// Can also be overridden via siteSettings.signupUrl in Sanity Studio.
+const SIGNUP_URL_FALLBACK = "https://form.typeform.com/to/IUcXpMZu";
 
 // Re-check Sanity at most once per minute
 export const revalidate = 60;
