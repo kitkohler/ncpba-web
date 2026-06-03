@@ -11,12 +11,14 @@ import { advisoryCouncilMember } from "./advisoryCouncilMember";
 import { partner } from "./partner";
 import { faqItem } from "./faqItem";
 import { siteSettings } from "./siteSettings";
+import { redirect } from "./redirect";
 
 export const schemaTypes = [
   // Blocks (registered globally so page schemas can reference them)
   ...allBlocks,
   // Global
   siteSettings,
+  redirect,
   // Singleton pages
   homePage,
   aboutPage,
