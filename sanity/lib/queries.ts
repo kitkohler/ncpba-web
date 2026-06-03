@@ -211,6 +211,7 @@ export const PARTNERS_QUERY = groq`
 
 export const SITE_SETTINGS_QUERY = groq`
   *[_type == "siteSettings" && _id == "siteSettings"][0] {
+    signupUrl,
     facebookUrl,
     instagramUrl,
     linkedinUrl,

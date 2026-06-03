@@ -5,6 +5,12 @@ export const siteSettings = defineType({
   title: "Site Settings",
   type: "document",
   fields: [
+    defineField({
+      name: "signupUrl",
+      title: "Signup URL",
+      type: "url",
+      description: "Destination for /signup — overrides the hardcoded fallback in next.config.mjs. Leave blank to use the default.",
+    }),
     defineField({ name: "facebookUrl",  title: "Facebook URL",  type: "url" }),
     defineField({ name: "instagramUrl", title: "Instagram URL", type: "url" }),
     defineField({ name: "linkedinUrl",  title: "LinkedIn URL",  type: "url" }),
