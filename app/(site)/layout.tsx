@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
