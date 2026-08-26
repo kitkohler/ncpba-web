@@ -6,6 +6,24 @@ export const siteSettings = defineType({
   type: "document",
   fields: [
     defineField({
+      name: "announcementEnabled",
+      title: "Show Announcement Banner",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
+      name: "announcementText",
+      title: "Announcement Text",
+      type: "string",
+      description: "Short message shown in the sitewide banner strip",
+    }),
+    defineField({
+      name: "announcementHref",
+      title: "Announcement Link",
+      type: "string",
+      description: "URL the banner links to — use /events to link to the events page",
+    }),
+    defineField({
       name: "signupUrl",
       title: "Signup URL",
       type: "url",

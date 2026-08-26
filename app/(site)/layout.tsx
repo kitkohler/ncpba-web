@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import AnnouncementBanner from "@/components/AnnouncementBanner";
 import { client } from "@/sanity/lib/client";
 import { SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
 
@@ -8,6 +9,11 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
 
   return (
     <>
+      <AnnouncementBanner
+        enabled={settings?.announcementEnabled}
+        text={settings?.announcementText}
+        href={settings?.announcementHref}
+      />
       <Nav />
       <main>{children}</main>
       <Footer
