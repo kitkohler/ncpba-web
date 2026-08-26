@@ -43,20 +43,20 @@ export default function ContactBodyBlock(props: Props) {
           >
             For media inquiries, partnership opportunities, or general questions.
           </p>
-          <form className="flex flex-col gap-[18px]">
+          <form action="https://formspree.io/f/xyegrlwb" method="POST" className="flex flex-col gap-[18px]">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
                 <label htmlFor="contact-name">Your name</label>
-                <input id="contact-name" type="text" placeholder="Full name" autoComplete="name" />
+                <input id="contact-name" name="name" type="text" placeholder="Full name" autoComplete="name" />
               </div>
               <div>
                 <label htmlFor="contact-email">Email address</label>
-                <input id="contact-email" type="email" placeholder="your@email.com" autoComplete="email" />
+                <input id="contact-email" name="email" type="email" placeholder="your@email.com" autoComplete="email" />
               </div>
             </div>
             <div>
               <label htmlFor="contact-subject">Subject</label>
-              <select id="contact-subject">
+              <select id="contact-subject" name="subject">
                 <option value="">Select a subject…</option>
                 {SUBJECT_OPTIONS.map((opt) => (
                   <option key={opt} value={opt.toLowerCase().replace(/\s+/g, "-")}>
@@ -69,6 +69,7 @@ export default function ContactBodyBlock(props: Props) {
               <label htmlFor="contact-message">Message</label>
               <textarea
                 id="contact-message"
+                name="message"
                 placeholder="Your message here…"
                 style={{ minHeight: 140 }}
               />
