@@ -12,6 +12,7 @@ import { partner } from "./partner";
 import { faqItem } from "./faqItem";
 import { siteSettings } from "./siteSettings";
 import { redirect } from "./redirect";
+import { manualEvent } from "./manualEvent";
 
 export const schemaTypes = [
   // Blocks (registered globally so page schemas can reference them)
@@ -27,6 +28,7 @@ export const schemaTypes = [
   contactPage,
   events,
   // Collections
+  manualEvent,
   newsPost,
   boardMember,
   advisoryCouncilMember,

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import Btn from "@/components/Btn";
+import { client } from "@/sanity/lib/client";
+import { MANUAL_EVENTS_QUERY } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = { title: "Events" };
 export const revalidate = 300;
@@ -17,6 +19,25 @@ interface UnderBurnEvent {
   acreage?: string | number;
   has_fire?: boolean;
   rsvp_url?: string;
+}
+
+async function fetchManualEvents(): Promise<UnderBurnEvent[]> {
+  try {
+    const rows = await client.fetch(MANUAL_EVENTS_QUERY);
+    if (!Array.isArray(rows)) return [];
+    return rows.map((r: { _id: string; title: string; event_type?: string; starts_at?: string; ends_at?: string; location_public?: string | null; description?: string; rsvp_url?: string }) => ({
+      id: r._id,
+      title: r.title,
+      event_type: r.event_type,
+      starts_at: r.starts_at,
+      ends_at: r.ends_at,
+      location_public: r.location_public,
+      description: r.description,
+      rsvp_url: r.rsvp_url,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 async function fetchEvents(): Promise<UnderBurnEvent[]> {
@@ -89,7 +110,12 @@ function formatDateRange(startsAt?: string, endsAt?: string): { date: string; ti
 }
 
 export default async function EventsPage() {
-  const events = await fetchEvents();
+  const [underburn, manual] = await Promise.all([fetchEvents(), fetchManualEvents()]);
+  const events = [...underburn, ...manual].sort((a, b) => {
+    const ta = a.starts_at ? new Date(a.starts_at).getTime() : Infinity;
+    const tb = b.starts_at ? new Date(b.starts_at).getTime() : Infinity;
+    return ta - tb;
+  });
 
   return (
     <>

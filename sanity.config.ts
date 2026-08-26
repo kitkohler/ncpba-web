@@ -52,6 +52,7 @@ const structure: StructureResolver = (S) =>
               S.documentTypeListItem("advisoryCouncilMember").title("Advisory Council"),
             ])
         ),
+      S.documentTypeListItem("manualEvent").title("Manual Events"),
       S.documentTypeListItem("partner").title("Partners"),
       S.documentTypeListItem("faqItem").title("FAQ Items"),
       S.divider(),

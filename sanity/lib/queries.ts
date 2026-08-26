@@ -155,6 +155,12 @@ export const CONTACT_QUERY = groq`
 
 // ─── Events ────────────────────────────────────────────────────────────────────
 
+export const MANUAL_EVENTS_QUERY = groq`
+  *[_type == "manualEvent" && starts_at > now()] | order(starts_at asc) {
+    _id, title, event_type, starts_at, ends_at, location_public, description, rsvp_url
+  }
+`;
+
 export const EVENTS_QUERY = groq`
   *[_type == "events"][0] {
     comingSoonHeadline,
