@@ -183,38 +183,6 @@ export default function ContactBodyBlock(props: Props) {
             </div>
           </div>
 
-          <hr style={{ border: "none", borderTop: "1px solid rgba(107,91,69,0.18)" }} />
-
-          {/* Newsletter */}
-          <div
-            className="rounded-[6px] p-[22px]"
-            style={{ backgroundColor: "white", boxShadow: "var(--shadow-card)" }}
-          >
-            <div
-              className="text-[13px] font-semibold mb-1.5"
-              style={{ fontFamily: "var(--font-body)", color: "var(--color-deep-soil)" }}
-            >
-              Stay in the loop
-            </div>
-            <p
-              className="text-[12px] leading-[1.55] mb-3.5"
-              style={{ color: "var(--color-smoke)", fontFamily: "var(--font-body)" }}
-            >
-              Get burn notifications and news from NCPBA.
-            </p>
-            <input type="email" placeholder="your@email.com" className="mb-2.5" />
-            <button
-              className="w-full text-[14px] font-semibold py-[10px] rounded-[4px] text-white"
-              style={{
-                backgroundColor: "var(--color-ember)",
-                border: "none",
-                fontFamily: "var(--font-body)",
-                cursor: "pointer",
-              }}
-            >
-              Subscribe
-            </button>
-          </div>
         </div>
       </div>
     </section>
