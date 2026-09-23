@@ -127,7 +127,7 @@ export const JOIN_QUERY = groq`
         overline, headline, subhead
       },
       _type == "block.joinSignup" => {
-        heading, body
+        heading, body, ctaLabel, ctaHref
       },
       _type == "block.emailSignup" => {
         overline, heading, body, ctaLabel, ctaHref, backgroundColor
