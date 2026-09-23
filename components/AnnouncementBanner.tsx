@@ -2,10 +2,12 @@ interface Props {
   enabled?: boolean;
   text?: string | null;
   href?: string | null;
+  expiresAt?: string | null;
 }
 
-export default function AnnouncementBanner({ enabled, text, href }: Props) {
+export default function AnnouncementBanner({ enabled, text, href, expiresAt }: Props) {
   if (!enabled || !text) return null;
+  if (expiresAt && new Date(expiresAt) <= new Date()) return null;
 
   const dest = href || "/events";
 

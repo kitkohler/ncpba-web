@@ -220,6 +220,7 @@ export const SITE_SETTINGS_QUERY = groq`
     announcementEnabled,
     announcementText,
     announcementHref,
+    announcementExpiresAt,
     signupUrl,
     facebookUrl,
     instagramUrl,

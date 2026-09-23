@@ -15,6 +15,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         enabled={settings?.announcementEnabled}
         text={settings?.announcementText}
         href={settings?.announcementHref}
+        expiresAt={settings?.announcementExpiresAt}
       />
       <Nav />
       <main>{children}</main>
