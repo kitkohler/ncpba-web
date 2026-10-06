@@ -22,9 +22,17 @@ export default async function SlashPilePaperPage() {
         overline="Group order"
         headline="Slash pile paper, ordered together."
         subhead="We're pooling orders for 4′ × 300′ rolls of slash pile paper. Freight is the expensive part, so the more rolls we order as a group, the cheaper each roll gets for everyone."
-      />
+      >
+        <a
+          href="#about"
+          className="inline-block mt-7 text-[15px] font-semibold no-underline hover:underline"
+          style={{ color: "var(--color-ember-light)", fontFamily: "var(--font-body)" }}
+        >
+          About slash pile paper ↓
+        </a>
+      </PageHero>
 
-      <section className="py-[88px] px-8 md:px-16" style={{ backgroundColor: "var(--color-warm-cream)" }}>
+      <section id="order" className="py-[88px] px-8 md:px-16 scroll-mt-20" style={{ backgroundColor: "var(--color-warm-cream)" }}>
         <div className="mx-auto max-w-[1000px] grid grid-cols-1 gap-16 md:grid-cols-[2fr_1.2fr] items-start">
           <div>
             <h2
@@ -54,7 +62,91 @@ export default async function SlashPilePaperPage() {
           </aside>
         </div>
       </section>
+
+      <AboutPilePaper />
     </>
+  );
+}
+
+const BENEFITS = [
+  {
+    title: "Burn when it’s safe",
+    body: "The safest time to burn piles is after the rains, when the ground and everything around the pile is wet. A covered pile stays dry inside, so it will actually light then.",
+  },
+  {
+    title: "Less smoke",
+    body: "Dry fuel burns hot and fast. A wet pile smolders for days and puts out far more smoke for you and your neighbors.",
+  },
+  {
+    title: "Burns with the pile",
+    body: "Plastic tarps have to come off before you light, because burning plastic isn’t allowed. Paper goes up with the pile, so there’s nothing to pull off a soggy pile and nothing left behind.",
+  },
+];
+
+function AboutPilePaper() {
+  return (
+    <section id="about" className="py-[88px] px-8 md:px-16 scroll-mt-20" style={{ backgroundColor: "var(--color-sand)" }}>
+      <div className="mx-auto max-w-[1000px]">
+        <Overline className="mb-4">Why paper?</Overline>
+        <h2
+          className="text-[32px] md:text-[38px] leading-[1.15] tracking-[-0.015em] mb-5 max-w-[22ch]"
+          style={{ fontFamily: "var(--font-display)", fontWeight: 400, color: "var(--color-deep-soil)" }}
+        >
+          Keep your piles dry. Burn them clean.
+        </h2>
+        <p
+          className="text-[17px] leading-[1.7] max-w-[62ch] mb-12"
+          style={{ color: "var(--color-oak-bark)", fontFamily: "var(--font-body)" }}
+        >
+          Slash pile paper is heavy, wax-coated paper made for covering brush and slash piles. Lay a sheet over the top
+          of a pile before the rains come and it keeps the center dry through the wet season, so when it&rsquo;s time to
+          burn, the pile lights easily and burns cleanly.
+        </p>
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3 mb-12">
+          {BENEFITS.map(({ title, body }) => (
+            <div key={title} className="rounded-[6px] p-6" style={{ backgroundColor: "white" }}>
+              <h3
+                className="text-[20px] leading-snug mb-2"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 400, color: "var(--color-deep-soil)" }}
+              >
+                {title}
+              </h3>
+              <p className="text-[14px] leading-[1.7]" style={{ color: "var(--color-oak-bark)", fontFamily: "var(--font-body)" }}>
+                {body}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="max-w-[62ch]">
+          <h3
+            className="text-[20px] leading-snug mb-3"
+            style={{ fontFamily: "var(--font-display)", fontWeight: 400, color: "var(--color-deep-soil)" }}
+          >
+            How to use it
+          </h3>
+          <ul
+            className="flex flex-col gap-2 text-[15px] leading-[1.7] list-disc pl-5"
+            style={{ color: "var(--color-oak-bark)", fontFamily: "var(--font-body)" }}
+          >
+            <li>Build piles compact and tight, with the small, fine material near the center.</li>
+            <li>Cover the top of the pile before the first big rain. It doesn&rsquo;t need to reach the ground, just shed water off the core.</li>
+            <li>Weigh the paper down with a few heavy branches so wind can&rsquo;t lift it.</li>
+            <li>One 4′ × 300′ roll covers a lot of piles, so it&rsquo;s easy to split with a neighbor.</li>
+            <li>When you burn, make sure it&rsquo;s a permissible burn day and follow your burn permit.</li>
+          </ul>
+
+          <a
+            href="#order"
+            className="inline-flex items-center justify-center mt-10 px-7 py-3 text-[15px] font-semibold rounded-[4px] text-white no-underline transition-all duration-[180ms] hover:brightness-90"
+            style={{ backgroundColor: "var(--color-ember)", fontFamily: "var(--font-body)" }}
+          >
+            Place your order ↑
+          </a>
+        </div>
+      </div>
+    </section>
   );
 }
 

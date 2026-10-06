@@ -4,10 +4,11 @@ interface PageHeroProps {
   overline?: string;
   headline: string;
   subhead?: string;
+  children?: React.ReactNode;
 }
 
 /** Dark-soil hero used on interior pages (About, How It Works, Join, Contact). */
-export default function PageHero({ overline, headline, subhead }: PageHeroProps) {
+export default function PageHero({ overline, headline, subhead, children }: PageHeroProps) {
   return (
     <section
       className="px-8 md:px-16 py-[88px] md:py-[88px]"
@@ -30,6 +31,7 @@ export default function PageHero({ overline, headline, subhead }: PageHeroProps)
               {subhead}
             </p>
           )}
+          {children}
         </div>
       </div>
     </section>
