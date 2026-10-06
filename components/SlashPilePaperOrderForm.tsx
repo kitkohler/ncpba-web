@@ -29,6 +29,7 @@ export default function SlashPilePaperOrderForm({ totalRolls }: Props) {
           name: form.get("name"),
           email: form.get("email"),
           phone: form.get("phone"),
+          venmo: form.get("venmo"),
           rolls: Number(form.get("rolls")),
           joinNcpba: form.get("joinNcpba") === "on",
           notes: form.get("notes"),
@@ -109,6 +110,23 @@ export default function SlashPilePaperOrderForm({ totalRolls }: Props) {
           {" "}(down from ~${Math.round(estimatePricePerRoll(totalRolls))}).
         </p>
       )}
+      <div>
+        <label htmlFor="order-venmo">Venmo username (optional)</label>
+        <input
+          id="order-venmo"
+          name="venmo"
+          type="text"
+          placeholder="@your-username"
+          autoComplete="off"
+          autoCapitalize="none"
+          spellCheck={false}
+          aria-describedby="order-venmo-help"
+          className="md:max-w-[calc(50%-8px)]"
+        />
+        <p id="order-venmo-help" className="text-[12px] mt-1.5" style={{ color: "var(--color-smoke-dark)", fontFamily: "var(--font-body)" }}>
+          Once the final price is set, we&rsquo;ll send you a Venmo request for your share.
+        </p>
+      </div>
       <div>
         <label htmlFor="order-notes">Notes (optional)</label>
         <textarea id="order-notes" name="notes" placeholder="Anything we should know?" style={{ minHeight: 90 }} />

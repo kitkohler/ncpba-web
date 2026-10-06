@@ -18,7 +18,7 @@
  */
 
 var SHEET_NAME = "Orders";
-var HEADERS = ["Submitted", "Name", "Email", "Phone", "Rolls", "Wants to join NCPBA", "Notes"];
+var HEADERS = ["Submitted", "Name", "Email", "Phone", "Rolls", "Wants to join NCPBA", "Notes", "Venmo"];
 var JOIN_COLUMN = 6;
 
 function doPost(e) {
@@ -36,6 +36,7 @@ function doPost(e) {
       Number(data.rolls) || 0,
       data.joinNcpba === true,
       asText(data.notes),
+      asText(data.venmo),
     ]);
     sheet.getRange(sheet.getLastRow(), JOIN_COLUMN).insertCheckboxes();
 
@@ -67,6 +68,11 @@ function getOrdersSheet() {
     sheet.appendRow(HEADERS);
     sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight("bold");
     sheet.setFrozenRows(1);
+  }
+  // Columns added later (like Venmo) go on the end; fill in their headers.
+  var header = sheet.getRange(1, 1, 1, HEADERS.length);
+  if (header.getValues()[0][HEADERS.length - 1] === "") {
+    header.setValues([HEADERS]).setFontWeight("bold");
   }
   return sheet;
 }

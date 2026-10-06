@@ -35,6 +35,7 @@ export async function POST(request: Request) {
     name: clean(body.name, 200),
     email: clean(body.email, 200),
     phone: clean(body.phone, 50),
+    venmo: clean(body.venmo, 50).replace(/^@+/, ""),
     rolls: Number(body.rolls),
     joinNcpba: body.joinNcpba === true,
     notes: clean(body.notes, 2000),
