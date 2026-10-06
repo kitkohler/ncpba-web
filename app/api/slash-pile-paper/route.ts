@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { DEADLINE_LABEL, ordersOpen } from "@/lib/slashPilePaper";
 
 // Google Apps Script web app bound to the private orders sheet.
 // See scripts/slash-pile-paper-order.gs for setup.
@@ -14,6 +15,10 @@ export async function POST(request: Request) {
   if (!SCRIPT_URL) {
     console.error("SLASH_PILE_PAPER_SCRIPT_URL is not set");
     return NextResponse.json({ error: "Orders aren't being accepted right now." }, { status: 500 });
+  }
+
+  if (!ordersOpen()) {
+    return NextResponse.json({ error: `Sorry — orders closed on ${DEADLINE_LABEL}.` }, { status: 403 });
   }
 
   const body = await request.json().catch(() => null);

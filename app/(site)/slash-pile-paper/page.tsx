@@ -2,7 +2,13 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import Overline from "@/components/Overline";
 import SlashPilePaperOrderForm from "@/components/SlashPilePaperOrderForm";
-import { PRICE_POINTS, estimatePricePerRoll, getTotalRollsOrdered } from "@/lib/slashPilePaper";
+import {
+  DEADLINE_LABEL,
+  PRICE_POINTS,
+  estimatePricePerRoll,
+  getTotalRollsOrdered,
+  ordersOpen,
+} from "@/lib/slashPilePaper";
 
 export const metadata: Metadata = {
   title: "Slash Pile Paper Group Order",
@@ -15,6 +21,7 @@ const GOAL = PRICE_POINTS[PRICE_POINTS.length - 1];
 
 export default async function SlashPilePaperPage() {
   const totalRolls = await getTotalRollsOrdered();
+  const open = ordersOpen();
 
   return (
     <>
@@ -23,9 +30,16 @@ export default async function SlashPilePaperPage() {
         headline="Slash pile paper, ordered together."
         subhead="We're pooling orders for 4′ × 300′ rolls of slash pile paper. Freight is the expensive part, so the more rolls we order as a group, the cheaper each roll gets for everyone."
       >
+        <p
+          className="inline-block mt-7 rounded-[4px] px-4 py-2 text-[15px] font-semibold"
+          style={{ backgroundColor: "rgba(237,229,212,0.10)", color: "var(--color-warm-cream)", fontFamily: "var(--font-body)" }}
+        >
+          {open ? `Orders close ${DEADLINE_LABEL}` : `Orders closed ${DEADLINE_LABEL}`}
+        </p>
+        <br />
         <a
           href="#about"
-          className="inline-block mt-7 text-[15px] font-semibold no-underline hover:underline"
+          className="inline-block mt-4 text-[15px] font-semibold no-underline hover:underline"
           style={{ color: "var(--color-ember-light)", fontFamily: "var(--font-body)" }}
         >
           About slash pile paper ↓
@@ -39,16 +53,26 @@ export default async function SlashPilePaperPage() {
               className="text-[28px] leading-snug mb-2"
               style={{ fontFamily: "var(--font-display)", fontWeight: 400, color: "var(--color-deep-soil)" }}
             >
-              Add your order
+              {open ? "Add your order" : "Orders are closed"}
             </h2>
-            <p className="text-[14px] mb-8" style={{ color: "var(--color-smoke-dark)", fontFamily: "var(--font-body)" }}>
-              No payment now. Your details stay private and are only used for this order.
-            </p>
-            <SlashPilePaperOrderForm totalRolls={totalRolls} />
+            {open ? (
+              <>
+                <p className="text-[14px] mb-8" style={{ color: "var(--color-smoke-dark)", fontFamily: "var(--font-body)" }}>
+                  <strong style={{ color: "var(--color-deep-soil)" }}>Orders close {DEADLINE_LABEL}.</strong> No payment
+                  now. Your details stay private and are only used for this order.
+                </p>
+                <SlashPilePaperOrderForm totalRolls={totalRolls} />
+              </>
+            ) : (
+              <p className="text-[15px] leading-[1.7]" style={{ color: "var(--color-oak-bark)", fontFamily: "var(--font-body)" }}>
+                This group order closed on {DEADLINE_LABEL}. If you ordered, we&rsquo;ll be in touch by email with the
+                final price, payment, and pickup details.
+              </p>
+            )}
           </div>
 
           <aside className="flex flex-col gap-7">
-            {totalRolls !== null ? <OrderProgress totalRolls={totalRolls} /> : <PricePoints />}
+            {totalRolls !== null ? <OrderProgress totalRolls={totalRolls} open={open} /> : <PricePoints />}
 
             <div>
               <Overline color="var(--color-smoke-dark)" className="mb-3">
@@ -63,7 +87,7 @@ export default async function SlashPilePaperPage() {
         </div>
       </section>
 
-      <AboutPilePaper />
+      <AboutPilePaper open={open} />
     </>
   );
 }
@@ -83,7 +107,7 @@ const BENEFITS = [
   },
 ];
 
-function AboutPilePaper() {
+function AboutPilePaper({ open }: { open: boolean }) {
   return (
     <section id="about" className="py-[88px] px-8 md:px-16 scroll-mt-20" style={{ backgroundColor: "var(--color-sand)" }}>
       <div className="mx-auto max-w-[1000px]">
@@ -137,20 +161,22 @@ function AboutPilePaper() {
             <li>When you burn, make sure it&rsquo;s a permissible burn day and follow your burn permit.</li>
           </ul>
 
-          <a
-            href="#order"
-            className="inline-flex items-center justify-center mt-10 px-7 py-3 text-[15px] font-semibold rounded-[4px] text-white no-underline transition-all duration-[180ms] hover:brightness-90"
-            style={{ backgroundColor: "var(--color-ember)", fontFamily: "var(--font-body)" }}
-          >
-            Place your order ↑
-          </a>
+          {open && (
+            <a
+              href="#order"
+              className="inline-flex items-center justify-center mt-10 px-7 py-3 text-[15px] font-semibold rounded-[4px] text-white no-underline transition-all duration-[180ms] hover:brightness-90"
+              style={{ backgroundColor: "var(--color-ember)", fontFamily: "var(--font-body)" }}
+            >
+              Place your order ↑
+            </a>
+          )}
         </div>
       </div>
     </section>
   );
 }
 
-function OrderProgress({ totalRolls }: { totalRolls: number }) {
+function OrderProgress({ totalRolls, open }: { totalRolls: number; open: boolean }) {
   const price = Math.round(estimatePricePerRoll(totalRolls));
   const toGoal = GOAL.rolls - totalRolls;
   const pct = Math.min(100, (totalRolls / GOAL.rolls) * 100);
@@ -158,7 +184,7 @@ function OrderProgress({ totalRolls }: { totalRolls: number }) {
   return (
     <div>
       <Overline color="var(--color-smoke-dark)" className="mb-4">
-        Ordered so far
+        {open ? "Ordered so far" : "Total ordered"}
       </Overline>
       <div className="rounded-[6px] px-5 py-5" style={{ backgroundColor: "white", fontFamily: "var(--font-body)" }}>
         <div className="flex items-baseline justify-between gap-4">
@@ -173,7 +199,7 @@ function OrderProgress({ totalRolls }: { totalRolls: number }) {
               ~${price}
             </span>
             <span className="text-[12px]" style={{ color: "var(--color-smoke-dark)" }}>
-              est. per roll now
+              {open ? "est. per roll now" : "est. per roll"}
             </span>
           </span>
         </div>
@@ -190,7 +216,9 @@ function OrderProgress({ totalRolls }: { totalRolls: number }) {
           <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: "var(--color-ember)" }} />
         </div>
         <p className="text-[13px] mt-2.5" style={{ color: "var(--color-oak-bark)" }}>
-          {toGoal > 0
+          {!open
+            ? "Final numbers will come by email."
+            : toGoal > 0
             ? `${toGoal} more rolls gets everyone down to about $${GOAL.price} a roll.`
             : `We've passed ${GOAL.rolls} rolls — about $${Math.round(estimatePricePerRoll(totalRolls))} a roll and still dropping.`}
         </p>

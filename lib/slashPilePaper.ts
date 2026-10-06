@@ -1,5 +1,20 @@
 // Shared pricing + order-total logic for the slash pile paper group order.
 
+// Orders close at the end of this day, Pacific time. The form and API stop
+// accepting orders after it.
+export const ORDER_DEADLINE = new Date("2026-10-09T23:59:59-07:00");
+
+export const DEADLINE_LABEL = ORDER_DEADLINE.toLocaleDateString("en-US", {
+  weekday: "long",
+  month: "long",
+  day: "numeric",
+  timeZone: "America/Los_Angeles",
+});
+
+export function ordersOpen(now = new Date()): boolean {
+  return now < ORDER_DEADLINE;
+}
+
 // Supplier's rough estimates — update as quotes firm up.
 export const PRICE_POINTS = [
   { rolls: 15, price: 71 },
