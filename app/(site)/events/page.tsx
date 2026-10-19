@@ -3,7 +3,6 @@ import PageHero from "@/components/PageHero";
 import Btn from "@/components/Btn";
 import { client } from "@/sanity/lib/client";
 import { MANUAL_EVENTS_QUERY } from "@/sanity/lib/queries";
-import { UNDERBURN_JOIN_URL } from "@/lib/underburn";
 
 export const metadata: Metadata = { title: "Events" };
 export const revalidate = 300;
@@ -19,11 +18,10 @@ interface UnderBurnEvent {
   complexity?: string;
   acreage?: string | number;
   has_fire?: boolean;
-  rsvp_url?: string | null;
-  // Members-only Underburn events are listed but guests can't RSVP to them:
-  // rsvp_url is null and join_url points at the membership signup.
+  rsvp_url?: string;
+  // Members-only Underburn events still link to the event page: signed-in
+  // members land on it, everyone else gets Underburn's sign-in / join page.
   members_only?: boolean;
-  join_url?: string | null;
 }
 
 async function fetchManualEvents(): Promise<UnderBurnEvent[]> {
@@ -247,20 +245,14 @@ export default async function EventsPage() {
                       </p>
                     )}
 
-                    {/* RSVP — members-only events point guests at membership instead */}
-                    {evt.rsvp_url ? (
+                    {/* RSVP */}
+                    {evt.rsvp_url && (
                       <div>
                         <Btn variant="primary" size="md" href={evt.rsvp_url}>
                           RSVP
                         </Btn>
                       </div>
-                    ) : evt.members_only ? (
-                      <div>
-                        <Btn variant="primary" size="md" href={evt.join_url ?? UNDERBURN_JOIN_URL}>
-                          Join NCPBA to RSVP
-                        </Btn>
-                      </div>
-                    ) : null}
+                    )}
                   </article>
                 );
               })}
