@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { UNDERBURN_JOIN_URL } from "@/lib/underburn";
 
 const FOOTER_COLS = [
   {
@@ -148,7 +149,7 @@ export default function Footer({
           {/* Join CTA */}
           <div className="mb-6">
             <a
-              href="https://groups.io/g/ncpba/join"
+              href={UNDERBURN_JOIN_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-1.5 font-semibold rounded-[4px] border-[1.5px] cursor-pointer select-none whitespace-nowrap transition-all duration-[180ms] ease-out hover:brightness-90 hover:-translate-y-px active:brightness-[0.82] active:scale-[0.98] px-[22px] py-[10px] text-[14px]"

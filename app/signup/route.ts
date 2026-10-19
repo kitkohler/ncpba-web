@@ -3,12 +3,12 @@ import { client } from "@/sanity/lib/client";
 
 // Update this when the signup destination changes in code.
 // Can also be overridden via siteSettings.signupUrl in Sanity Studio.
-const SIGNUP_URL_FALLBACK = "https://form.typeform.com/to/IUcXpMZu";
+const SIGNUP_URL_FALLBACK = "/jointhepba";
 
 // Re-check Sanity at most once per minute
 export const revalidate = 60;
 
-export async function GET() {
+export async function GET(request: Request) {
   let destination: string = SIGNUP_URL_FALLBACK;
 
   try {
@@ -22,5 +22,5 @@ export async function GET() {
     // Sanity unreachable — fall back to hardcoded URL
   }
 
-  return NextResponse.redirect(destination, { status: 308 });
+  return NextResponse.redirect(new URL(destination, request.url), { status: 308 });
 }

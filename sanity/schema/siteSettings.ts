@@ -43,7 +43,7 @@ export const siteSettings = defineType({
       name: "signupUrl",
       title: "Signup URL",
       type: "url",
-      description: "Destination for /signup — overrides the hardcoded fallback in next.config.mjs. Leave blank to use the default.",
+      description: "Destination for /signup — overrides the default (the /jointhepba page). Leave blank to use the default.",
     }),
     defineField({ name: "facebookUrl",  title: "Facebook URL",  type: "url" }),
     defineField({ name: "instagramUrl", title: "Instagram URL", type: "url" }),

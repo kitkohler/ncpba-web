@@ -1,3 +1,5 @@
+import { UNDERBURN_JOIN_URL } from "@/lib/underburn";
+
 // Path cards (landowner / volunteer) hidden for now — may restore later.
 // Copy and card logic preserved in git history (components/JoinPathCards.tsx).
 
@@ -12,7 +14,7 @@ const COPY = {
   heading: "Ready to get involved?",
   body: "Join our community and we’ll be in touch within a few days.",
   ctaLabel: "Join the NCPBA Community",
-  ctaHref: "https://groups.io/g/ncpba/join",
+  ctaHref: UNDERBURN_JOIN_URL,
 };
 
 export default function JoinSignupBlock(props: Props) {
