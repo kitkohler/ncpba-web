@@ -3,6 +3,7 @@ import PageHero from "@/components/PageHero";
 import Btn from "@/components/Btn";
 import { client } from "@/sanity/lib/client";
 import { MANUAL_EVENTS_QUERY } from "@/sanity/lib/queries";
+import { UNDERBURN_JOIN_URL } from "@/lib/underburn";
 
 export const metadata: Metadata = { title: "Events" };
 export const revalidate = 300;
@@ -18,7 +19,11 @@ interface UnderBurnEvent {
   complexity?: string;
   acreage?: string | number;
   has_fire?: boolean;
-  rsvp_url?: string;
+  rsvp_url?: string | null;
+  // Members-only Underburn events are listed but guests can't RSVP to them:
+  // rsvp_url is null and join_url points at the membership signup.
+  members_only?: boolean;
+  join_url?: string | null;
 }
 
 async function fetchManualEvents(): Promise<UnderBurnEvent[]> {
@@ -175,6 +180,14 @@ export default async function EventsPage() {
                           {complexityConfig.label}
                         </span>
                       )}
+                      {evt.members_only && (
+                        <span
+                          className="inline-block text-[11px] font-bold tracking-[0.07em] uppercase rounded-[3px] px-2.5 py-1"
+                          style={{ backgroundColor: "rgba(107,91,69,0.10)", color: "var(--color-oak-bark)", fontFamily: "var(--font-body)" }}
+                        >
+                          Members only
+                        </span>
+                      )}
                       {acreage && (
                         <span
                           className="inline-block text-[11px] font-semibold tracking-[0.05em] rounded-[3px] px-2.5 py-1"
@@ -234,14 +247,20 @@ export default async function EventsPage() {
                       </p>
                     )}
 
-                    {/* RSVP */}
-                    {evt.rsvp_url && (
+                    {/* RSVP — members-only events point guests at membership instead */}
+                    {evt.rsvp_url ? (
                       <div>
                         <Btn variant="primary" size="md" href={evt.rsvp_url}>
                           RSVP
                         </Btn>
                       </div>
-                    )}
+                    ) : evt.members_only ? (
+                      <div>
+                        <Btn variant="primary" size="md" href={evt.join_url ?? UNDERBURN_JOIN_URL}>
+                          Join NCPBA to RSVP
+                        </Btn>
+                      </div>
+                    ) : null}
                   </article>
                 );
               })}
