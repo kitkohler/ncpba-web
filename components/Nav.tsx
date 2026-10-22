@@ -9,8 +9,13 @@ import Btn from "./Btn";
 interface NavLink { label: string; href: string; }
 
 interface NavProps {
-  links?: NavLink[];
+  links?: NavLink[] | null;
+  ctaLabel?: string | null;
+  ctaHref?: string | null;
 }
+
+// Defaults used when the matching Site Settings field is empty in Sanity
+const DEFAULT_CTA: NavLink = { label: "Get Involved", href: "/join" };
 
 const DEFAULT_LINKS: NavLink[] = [
   { label: "About",        href: "/about"         },
@@ -21,7 +26,10 @@ const DEFAULT_LINKS: NavLink[] = [
   { label: "Contact",      href: "/contact"        },
 ];
 
-export default function Nav({ links = DEFAULT_LINKS }: NavProps) {
+export default function Nav(props: NavProps) {
+  const links = props.links?.length ? props.links : DEFAULT_LINKS;
+  const ctaLabel = props.ctaLabel || DEFAULT_CTA.label;
+  const ctaHref = props.ctaHref || DEFAULT_CTA.href;
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -74,10 +82,10 @@ export default function Nav({ links = DEFAULT_LINKS }: NavProps) {
 
         {/* Desktop links */}
         <ul className="hidden items-center gap-[26px] md:flex">
-          {links.map((link) => {
+          {links.map((link, i) => {
             const active = isActive(link.href);
             return (
-              <li key={link.href}>
+              <li key={link.label + i}>
                 <Link
                   href={link.href}
                   className="no-underline text-[13px] font-medium pb-[3px] transition-colors duration-[180ms]"
@@ -104,8 +112,8 @@ export default function Nav({ links = DEFAULT_LINKS }: NavProps) {
 
         {/* Desktop CTA */}
         <div className="hidden md:block">
-          <Btn variant="primary" size="sm" href="/join">
-            Get Involved
+          <Btn variant="primary" size="sm" href={ctaHref}>
+            {ctaLabel}
           </Btn>
         </div>
 
@@ -143,8 +151,8 @@ export default function Nav({ links = DEFAULT_LINKS }: NavProps) {
           }}
         >
           <ul className="flex flex-col px-8 py-5 gap-4">
-            {links.map((link) => (
-              <li key={link.href}>
+            {links.map((link, i) => (
+              <li key={link.label + i}>
                 <Link
                   href={link.href}
                   className="no-underline text-[14px] font-medium block"
@@ -158,8 +166,8 @@ export default function Nav({ links = DEFAULT_LINKS }: NavProps) {
               </li>
             ))}
             <li className="pt-2">
-              <Btn variant="primary" size="sm" href="/join" className="w-full">
-                Get Involved
+              <Btn variant="primary" size="sm" href={ctaHref} className="w-full">
+                {ctaLabel}
               </Btn>
             </li>
           </ul>

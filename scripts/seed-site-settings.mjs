@@ -1,13 +1,13 @@
 /**
- * One-time seed: copy the footer text that used to be hardcoded in
- * components/Footer.tsx into the Site Settings document, so editors see
- * the real values in the studio instead of empty fields.
+ * Seed: copy the top menu and footer text that used to be hardcoded in
+ * components/Nav.tsx and components/Footer.tsx into the Site Settings
+ * document, so editors see the real values in the studio instead of empty fields.
  *
  * Only fills fields that are empty — anything already edited in the studio
  * is left alone. Safe to re-run.
  *
  * Usage:
- *   SANITY_API_WRITE_TOKEN=<token> node scripts/seed-footer-settings.mjs
+ *   node --env-file=.env.local scripts/seed-site-settings.mjs   (needs SANITY_API_WRITE_TOKEN)
  *
  * Get a write token from:
  *   sanity.io/manage → project 2r7xt8dx → API → Tokens → Add API Token (Editor)
@@ -33,15 +33,25 @@ function key(prefix) {
   return `${prefix}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
-function link(label, href) {
-  return { _type: "footerLink", _key: key("link"), label, href };
+function link(label, href, type = "footerLink") {
+  return { _type: type, _key: key("link"), label, href };
 }
 
 function column(title, links) {
   return { _type: "footerColumn", _key: key("col"), title, links };
 }
 
-const FOOTER_DEFAULTS = {
+const DEFAULTS = {
+  navLinks: [
+    link("About", "/about", "navLink"),
+    link("How It Works", "/how-it-works", "navLink"),
+    link("Join", "/join", "navLink"),
+    link("Events", "/events", "navLink"),
+    link("News", "/news", "navLink"),
+    link("Contact", "/contact", "navLink"),
+  ],
+  navCtaLabel: "Get Involved",
+  navCtaHref: "/join",
   footerTagline: "Good Fire with Neighbors · Safely, Legally, Responsibly",
   footerEmail: "info@nevadacountypba.org",
   footerLocation: "Nevada County, CA",
@@ -74,14 +84,14 @@ async function main() {
   await client.createIfNotExists({ _id: "siteSettings", _type: "siteSettings" });
   const before = await client.getDocument("siteSettings");
 
-  await client.patch("siteSettings").setIfMissing(FOOTER_DEFAULTS).commit();
+  await client.patch("siteSettings").setIfMissing(DEFAULTS).commit();
 
   // The studio shows unpublished edits from the draft, so fill that too if there is one
   if (await client.getDocument("drafts.siteSettings")) {
-    await client.patch("drafts.siteSettings").setIfMissing(FOOTER_DEFAULTS).commit();
+    await client.patch("drafts.siteSettings").setIfMissing(DEFAULTS).commit();
   }
 
-  for (const field of Object.keys(FOOTER_DEFAULTS)) {
+  for (const field of Object.keys(DEFAULTS)) {
     console.log(before?.[field] == null ? `✅  ${field} filled` : `⏭️   ${field} already set — left as is`);
   }
 }

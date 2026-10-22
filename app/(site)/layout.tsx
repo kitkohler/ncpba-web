@@ -17,7 +17,11 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         href={settings?.announcementHref}
         expiresAt={settings?.announcementExpiresAt}
       />
-      <Nav />
+      <Nav
+        links={settings?.navLinks}
+        ctaLabel={settings?.navCtaLabel}
+        ctaHref={settings?.navCtaHref}
+      />
       <main>{children}</main>
       <Footer
         facebookUrl={settings?.facebookUrl ?? null}

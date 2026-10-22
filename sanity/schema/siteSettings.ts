@@ -1,35 +1,41 @@
 import { defineArrayMember, defineField, defineType, type StringRule } from "sanity";
 
-const linkHrefValidation = (Rule: StringRule) =>
-  Rule.required().custom((value) => {
+const HREF_DESCRIPTION = "A page on this site like /about, or a full URL like https://example.org";
+
+const hrefFormat = (Rule: StringRule) =>
+  Rule.custom((value) => {
     if (!value) return true;
     return /^(\/|https?:\/\/|mailto:)/.test(value)
       ? true
       : "Start with / for a page on this site, or https:// for another website";
   });
 
-const footerLink = defineArrayMember({
-  name: "footerLink",
-  title: "Link",
-  type: "object",
-  fields: [
-    defineField({ name: "label", title: "Label", type: "string", validation: (Rule) => Rule.required() }),
-    defineField({
-      name: "href",
-      title: "Link",
-      type: "string",
-      description: "A page on this site like /about, or a full URL like https://example.org",
-      validation: linkHrefValidation,
-    }),
-  ],
-  preview: { select: { title: "label", subtitle: "href" } },
-});
+const linkMember = (name: string) =>
+  defineArrayMember({
+    name,
+    title: "Link",
+    type: "object",
+    fields: [
+      defineField({ name: "label", title: "Label", type: "string", validation: (Rule) => Rule.required() }),
+      defineField({
+        name: "href",
+        title: "Link",
+        type: "string",
+        description: HREF_DESCRIPTION,
+        validation: (Rule) => hrefFormat(Rule).required(),
+      }),
+    ],
+    preview: { select: { title: "label", subtitle: "href" } },
+  });
+
+const footerLink = linkMember("footerLink");
 
 export const siteSettings = defineType({
   name: "siteSettings",
   title: "Site Settings",
   type: "document",
   fieldsets: [
+    { name: "menu", title: "Top Menu", options: { collapsible: true, collapsed: false } },
     { name: "footer", title: "Footer", options: { collapsible: true, collapsed: false } },
   ],
   fields: [
@@ -72,6 +78,31 @@ export const siteSettings = defineType({
       title: "Signup URL",
       type: "url",
       description: "Destination for /signup — overrides the default (the /jointhepba page). Leave blank to use the default.",
+    }),
+    defineField({
+      name: "navLinks",
+      title: "Menu Links",
+      type: "array",
+      description: "Links across the top of every page, in order. Drag to reorder.",
+      fieldset: "menu",
+      of: [linkMember("navLink")],
+      validation: (Rule) =>
+        Rule.max(7).warning("More than 7 links may not fit on one line on smaller laptop screens"),
+    }),
+    defineField({
+      name: "navCtaLabel",
+      title: "Button Label",
+      type: "string",
+      description: "The highlighted button at the right of the menu",
+      fieldset: "menu",
+    }),
+    defineField({
+      name: "navCtaHref",
+      title: "Button Link",
+      type: "string",
+      description: HREF_DESCRIPTION,
+      fieldset: "menu",
+      validation: hrefFormat,
     }),
     defineField({
       name: "footerTagline",
