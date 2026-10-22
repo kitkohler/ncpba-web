@@ -13,6 +13,7 @@ import { faqItem } from "./faqItem";
 import { siteSettings } from "./siteSettings";
 import { redirect } from "./redirect";
 import { manualEvent } from "./manualEvent";
+import { siteRequest } from "./siteRequest";
 
 export const schemaTypes = [
   // Blocks (registered globally so page schemas can reference them)
@@ -34,4 +35,6 @@ export const schemaTypes = [
   advisoryCouncilMember,
   partner,
   faqItem,
+  // Editor requests
+  siteRequest,
 ];

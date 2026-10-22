@@ -7,10 +7,36 @@ import { schemaTypes } from "@/sanity/schema";
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET!;
 
+const requestList = (S: Parameters<StructureResolver>[0], title: string, filter: string) =>
+  S.listItem()
+    .title(title)
+    .child(
+      S.documentList()
+        .title(title)
+        .schemaType("siteRequest")
+        .filter(`_type == "siteRequest" && (${filter})`)
+        .defaultOrdering([{ field: "_createdAt", direction: "desc" }])
+        .initialValueTemplates([S.initialValueTemplateItem("siteRequest")])
+    );
+
 const structure: StructureResolver = (S) =>
   S.list()
     .title("Content")
     .items([
+      S.listItem()
+        .title("Website Requests")
+        .child(
+          S.list()
+            .title("Website Requests")
+            .items([
+              requestList(S, "Open", `status in ["new", "working"] || !defined(status)`),
+              requestList(S, "Questions for you", `status == "question"`),
+              requestList(S, "Done & closed", `status in ["done", "wontdo"]`),
+              S.divider(),
+              requestList(S, "All requests", "true"),
+            ])
+        ),
+      S.divider(),
       S.listItem()
         .title("Pages")
         .child(
@@ -71,5 +97,12 @@ export default defineConfig({
   plugins: [structureTool({ structure }), visionTool()],
   schema: {
     types: schemaTypes,
+  },
+  document: {
+    // Website requests stay as drafts so they aren't readable through the public dataset API
+    actions: (prev, { schemaType }) =>
+      schemaType === "siteRequest"
+        ? prev.filter(({ action }) => action !== "publish" && action !== "unpublish")
+        : prev,
   },
 });
