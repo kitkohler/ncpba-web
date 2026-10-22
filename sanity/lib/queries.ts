@@ -226,6 +226,13 @@ export const SITE_SETTINGS_QUERY = groq`
     instagramUrl,
     linkedinUrl,
     youtubeUrl,
-    nextdoorUrl
+    nextdoorUrl,
+    footerTagline,
+    footerEmail,
+    footerLocation,
+    footerJoinLabel,
+    footerColumns[]{ title, links[]{ label, href } },
+    footerCopyright,
+    footerBottomLinks[]{ label, href }
   }
 `;

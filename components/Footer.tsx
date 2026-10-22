@@ -4,7 +4,28 @@ import Link from "next/link";
 import Image from "next/image";
 import { UNDERBURN_JOIN_URL } from "@/lib/underburn";
 
-const FOOTER_COLS = [
+interface FooterLink {
+  label: string;
+  href: string;
+}
+
+interface FooterColumn {
+  title: string;
+  links?: FooterLink[];
+}
+
+// Defaults used when the matching Site Settings field is empty in Sanity
+const COPY = {
+  tagline: "Good Fire with Neighbors · Safely, Legally, Responsibly",
+  email: "info@nevadacountypba.org",
+  location: "Nevada County, CA",
+  joinLabel: "Join the NCPBA Community",
+  copyright: "Nevada County Prescribed Burn Association · A fiscally sponsored project of NCRCD",
+};
+
+const DEFAULT_BOTTOM_LINKS: FooterLink[] = [{ label: "Contact", href: "/contact" }];
+
+const DEFAULT_COLUMNS: FooterColumn[] = [
   {
     title: "Organization",
     links: [
@@ -86,15 +107,25 @@ interface FooterProps {
   linkedinUrl:  string | null;
   youtubeUrl:   string | null;
   nextdoorUrl:  string | null;
+  tagline?:     string | null;
+  email?:       string | null;
+  location?:    string | null;
+  joinLabel?:   string | null;
+  columns?:     FooterColumn[] | null;
+  copyright?:   string | null;
+  bottomLinks?: FooterLink[] | null;
 }
 
-export default function Footer({
-  facebookUrl,
-  instagramUrl,
-  linkedinUrl,
-  youtubeUrl,
-  nextdoorUrl,
-}: FooterProps) {
+export default function Footer(props: FooterProps) {
+  const { facebookUrl, instagramUrl, linkedinUrl, youtubeUrl, nextdoorUrl } = props;
+  const tagline = props.tagline || COPY.tagline;
+  const email = props.email || COPY.email;
+  const location = props.location || COPY.location;
+  const joinLabel = props.joinLabel || COPY.joinLabel;
+  const copyright = props.copyright || COPY.copyright;
+  const footerCols = props.columns?.length ? props.columns : DEFAULT_COLUMNS;
+  const bottomBarLinks = props.bottomLinks?.length ? props.bottomLinks : DEFAULT_BOTTOM_LINKS;
+
   const socialLinks: SocialLink[] = [
     facebookUrl  && { href: facebookUrl,  label: "Facebook",  icon: <FacebookIcon /> },
     instagramUrl && { href: instagramUrl, label: "Instagram", icon: <InstagramIcon /> },
@@ -128,7 +159,7 @@ export default function Footer({
                 className="text-[10px] leading-none mt-0.5"
                 style={{ color: "rgba(237,229,212,0.38)", fontFamily: "var(--font-body)" }}
               >
-                Good Fire with Neighbors · Safely, Legally, Responsibly
+                {tagline}
               </div>
             </div>
           </div>
@@ -137,13 +168,13 @@ export default function Footer({
             className="text-[13px] leading-[1.7] mb-1"
             style={{ color: "rgba(237,229,212,0.50)", fontFamily: "var(--font-body)" }}
           >
-            info@nevadacountypba.org
+            {email}
           </p>
           <p
             className="text-[13px] leading-[1.7] mb-6"
             style={{ color: "rgba(237,229,212,0.50)", fontFamily: "var(--font-body)" }}
           >
-            Nevada County, CA
+            {location}
           </p>
 
           {/* Join CTA */}
@@ -161,7 +192,7 @@ export default function Footer({
                 textDecoration: "none",
               }}
             >
-              Join the NCPBA Community
+              {joinLabel}
             </a>
           </div>
 
@@ -185,8 +216,8 @@ export default function Footer({
         </div>
 
         {/* Link columns */}
-        {FOOTER_COLS.map((col) => (
-          <div key={col.title}>
+        {footerCols.map((col, i) => (
+          <div key={col.title + i}>
             <div
               className="text-[10px] font-bold tracking-[0.08em] uppercase mb-4"
               style={{ color: "rgba(237,229,212,0.32)", fontFamily: "var(--font-body)" }}
@@ -194,8 +225,8 @@ export default function Footer({
               {col.title}
             </div>
             <ul className="flex flex-col gap-2.5">
-              {col.links.map((l) => (
-                <li key={l.label}>
+              {(col.links ?? []).map((l, j) => (
+                <li key={l.label + j}>
                   <Link
                     href={l.href}
                     className="text-[13px] no-underline transition-colors duration-200"
@@ -222,12 +253,12 @@ export default function Footer({
             className="text-[12px]"
             style={{ color: "rgba(237,229,212,0.28)", fontFamily: "var(--font-body)" }}
           >
-            © 2025 Nevada County Prescribed Burn Association · A fiscally sponsored project of NCRCD
+            © {new Date().getFullYear()} {copyright}
           </span>
           <div className="flex gap-5">
-            {[["Privacy", "/contact"], ["Contact", "/contact"]].map(([l, href]) => (
+            {bottomBarLinks.map(({ label: l, href }, i) => (
               <Link
-                key={l}
+                key={l + i}
                 href={href}
                 className="text-[12px] no-underline"
                 style={{ color: "rgba(237,229,212,0.28)", fontFamily: "var(--font-body)" }}

@@ -1,9 +1,37 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType, type StringRule } from "sanity";
+
+const linkHrefValidation = (Rule: StringRule) =>
+  Rule.required().custom((value) => {
+    if (!value) return true;
+    return /^(\/|https?:\/\/|mailto:)/.test(value)
+      ? true
+      : "Start with / for a page on this site, or https:// for another website";
+  });
+
+const footerLink = defineArrayMember({
+  name: "footerLink",
+  title: "Link",
+  type: "object",
+  fields: [
+    defineField({ name: "label", title: "Label", type: "string", validation: (Rule) => Rule.required() }),
+    defineField({
+      name: "href",
+      title: "Link",
+      type: "string",
+      description: "A page on this site like /about, or a full URL like https://example.org",
+      validation: linkHrefValidation,
+    }),
+  ],
+  preview: { select: { title: "label", subtitle: "href" } },
+});
 
 export const siteSettings = defineType({
   name: "siteSettings",
   title: "Site Settings",
   type: "document",
+  fieldsets: [
+    { name: "footer", title: "Footer", options: { collapsible: true, collapsed: false } },
+  ],
   fields: [
     defineField({
       name: "announcementEnabled",
@@ -45,11 +73,62 @@ export const siteSettings = defineType({
       type: "url",
       description: "Destination for /signup — overrides the default (the /jointhepba page). Leave blank to use the default.",
     }),
-    defineField({ name: "facebookUrl",  title: "Facebook URL",  type: "url" }),
-    defineField({ name: "instagramUrl", title: "Instagram URL", type: "url" }),
-    defineField({ name: "linkedinUrl",  title: "LinkedIn URL",  type: "url" }),
-    defineField({ name: "youtubeUrl",   title: "YouTube URL",   type: "url" }),
-    defineField({ name: "nextdoorUrl",  title: "Nextdoor URL",  type: "url" }),
+    defineField({
+      name: "footerTagline",
+      title: "Tagline",
+      type: "string",
+      description: "Small line under “Nevada County PBA” next to the logo",
+      fieldset: "footer",
+    }),
+    defineField({ name: "footerEmail",    title: "Email",    type: "string", fieldset: "footer" }),
+    defineField({ name: "footerLocation", title: "Location", type: "string", fieldset: "footer" }),
+    defineField({
+      name: "footerJoinLabel",
+      title: "Join Button Label",
+      type: "string",
+      description: "The button always links to the Underburn join page",
+      fieldset: "footer",
+    }),
+    defineField({ name: "facebookUrl",  title: "Facebook URL",  type: "url", fieldset: "footer" }),
+    defineField({ name: "instagramUrl", title: "Instagram URL", type: "url", fieldset: "footer" }),
+    defineField({ name: "linkedinUrl",  title: "LinkedIn URL",  type: "url", fieldset: "footer" }),
+    defineField({ name: "youtubeUrl",   title: "YouTube URL",   type: "url", fieldset: "footer" }),
+    defineField({ name: "nextdoorUrl",  title: "Nextdoor URL",  type: "url", fieldset: "footer" }),
+    defineField({
+      name: "footerColumns",
+      title: "Link Columns",
+      type: "array",
+      description: "Up to 3 columns of links",
+      fieldset: "footer",
+      validation: (Rule) => Rule.max(3),
+      of: [
+        defineArrayMember({
+          name: "footerColumn",
+          title: "Column",
+          type: "object",
+          fields: [
+            defineField({ name: "title", title: "Column Title", type: "string", validation: (Rule) => Rule.required() }),
+            defineField({ name: "links", title: "Links", type: "array", of: [footerLink] }),
+          ],
+          preview: { select: { title: "title" } },
+        }),
+      ],
+    }),
+    defineField({
+      name: "footerCopyright",
+      title: "Copyright Line",
+      type: "string",
+      description: "“© ” and the current year are added automatically in front of this",
+      fieldset: "footer",
+    }),
+    defineField({
+      name: "footerBottomLinks",
+      title: "Bottom Bar Links",
+      type: "array",
+      description: "Small links at the very bottom right",
+      fieldset: "footer",
+      of: [footerLink],
+    }),
   ],
   preview: { prepare: () => ({ title: "Site Settings" }) },
 });

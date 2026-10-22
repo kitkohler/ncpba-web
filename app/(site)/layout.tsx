@@ -25,6 +25,13 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         linkedinUrl={settings?.linkedinUrl ?? null}
         youtubeUrl={settings?.youtubeUrl ?? null}
         nextdoorUrl={settings?.nextdoorUrl ?? null}
+        tagline={settings?.footerTagline}
+        email={settings?.footerEmail}
+        location={settings?.footerLocation}
+        joinLabel={settings?.footerJoinLabel}
+        columns={settings?.footerColumns}
+        copyright={settings?.footerCopyright}
+        bottomLinks={settings?.footerBottomLinks}
       />
     </>
   );
